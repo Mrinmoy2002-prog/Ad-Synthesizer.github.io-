@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Upload and Ad Copy Generation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .form-group input[type="file"] {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 100%;
+    }
+
+    .button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .image-preview {
+      margin-bottom: 20px;
+    }
+
+    .ad-copy {
+      font-size: 18px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Image Upload and Ad Copy Generation</h1>
+    <div class="form-group">
+      <label for="imageUpload">Select an image:</label>
+      <input type="file" id="imageUpload" accept="image/*">
+    </div>
+    <button class="button" onclick="generateAdCopy()">Generate Ad Copy</button>
+    <div class="image-preview">
+      <img id="previewImage" src="#" alt="Image Preview" style="display: none; max-width: 100%;">
+    </div>
+    <div id="adCopyResult" class="ad-copy"></div>
+  </div>
+
+  <script>
+    // Function to upload an image and generate alternate text
+function uploadImageAndGetAlternateText(imageFile) {
+  // Call the first API to generate alternate text
+  callFirstAPI(imageFile)
+    .then(alternateText => {
+      // Fetch ad copy using the alternate text
+      fetchAdCopy(alternateText)
+        .then(adCopy => {
+          // Display the ad copy
+          console.log('Generated Ad Copy:', adCopy);
+        })
+        .catch(error => {
+          console.error('Error fetching ad copy:', error);
+        });
+    })
+    .catch(error => {
+      console.error('Error generating alternate text:', error);
+    });
+}
+
+// Function to call the first API and generate alternate text
+function callFirstAPI(imageFile) {
+  return new Promise((resolve, reject) => {
+    // Perform API call to generate alternate text for the image
+    // Replace 'firstApiEndpoint' with the actual endpoint URL of the first API
+    // Replace 'API_KEY' with the actual API key for the first API
+    // Use appropriate headers and request parameters as required by the API
+    fetch('firstApiEndpoint', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'API-Key': 'API_KEY'
+      },
+      body: imageFile
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Extract the alternate text from the API response
+        const alternateText = data.alternateText;
+        resolve(alternateText);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
+}
+
+// Function to fetch ad copy using the alternate text
+function fetchAdCopy(alternateText) {
+  return new Promise((resolve, reject) => {
+    // Perform API call to fetch ad copy using the alternate text
+    // Replace 'secondApiEndpoint' with the actual endpoint URL of the second API
+    // Replace 'API_KEY' with the actual API key for the second API
+    // Use appropriate headers and request parameters as required by the API
+    fetch('secondApiEndpoint', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'API-Key': 'API_KEY'
+      },
+      body: JSON.stringify({ alternateText })
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Extract the ad copy from the API response
+        const adCopy = data.adCopy;
+        resolve(adCopy);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
+}
+
+// Example usage:
+// const imageFile = ;
+uploadImageAndGetAlternateText(imageFile);
+
+  </script>
+</body>
+</html>
